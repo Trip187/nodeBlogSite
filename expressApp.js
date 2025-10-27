@@ -9,7 +9,7 @@ const dbURI = process.env.MONGODB_URI;
 mongoose
   .connect(dbURI)
   .then(() => {
-    const PORT = process.env.PORT || 3000; // ✅ pick Render's port
+    const PORT = process.env.PORT || 3000; //  pick Render's port
     app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
   })
   .catch((error) => {

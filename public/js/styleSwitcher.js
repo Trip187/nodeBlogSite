@@ -30,8 +30,8 @@ sc = {
 
   updateIcon: function (btn) {
     btn.innerHTML = document.body.classList.contains("dark-mode")
-      ? `Theme 🌙`
-      : `Theme ☀️`;
+      ? `Light Theme 🌙`
+      : `Dark Theme ☀️`;
   },
 };
 
