@@ -1,27 +1,29 @@
-const express = require('express');
-const morgan = require ('morgan');
-const mongoose = require('mongoose');
-const blogRoutes= require('./routes/blogRoutes');
-//express 
+const express = require("express");
+const morgan = require("morgan");
+const mongoose = require("mongoose");
+const blogRoutes = require("./routes/blogRoutes");
+//express
 const app = express();
 // connect MongoDB
-const dbURI='mongodb+srv://user2:test234@nodetuts.s7bpdet.mongodb.net/';
-  mongoose.connect(dbURI).then(()=>{
-    app.listen(3000)
-  })
-  .catch ((error)=>{
-    console.log('error when connecting to the database',error);
-  });
-  
+const dbURI = "mongodb+srv://user2:test234@nodetuts.s7bpdet.mongodb.net/";
 
+mongoose
+  .connect(dbURI)
+  .then(() => {
+    const PORT = process.env.PORT || 3000; // ✅ pick Render's port
+    app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+  })
+  .catch((error) => {
+    console.log("Error connecting to the database:", error);
+  });
 
 //register view engine
-app.set('view engine','ejs');
+app.set("view engine", "ejs");
 
 //middleware & static files
-app.use(express.static('public'));
-app.use(express.urlencoded({ extended : true}));
-app.use(morgan('dev'));
+app.use(express.static("public"));
+app.use(express.urlencoded({ extended: true }));
+app.use(morgan("dev"));
 //mongoose and sandbox routes
 /*
 app.get('/add-blog',(req,res)=>{
@@ -61,26 +63,37 @@ app.get('/single-blog',(req,res)=>{
 //outputting documents in view
 
 //routes
-app.get('/',(req,res)=>{
-    //res.send('<p> Home Page </p>');
+app.get("/", (req, res) => {
+  //res.send('<p> Home Page </p>');
   //  res.sendFile('./views/index.html',{root:__dirname});
   //rendering a view
   const blogs = [
-    {title:'Yoshi found eggs',snippet:'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'},
-    {title:'Mario is the winner',snippet:'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'},
-    {title:'Gikash kwa Bash',snippet:'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'},
+    {
+      title: "Yoshi found eggs",
+      snippet:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    },
+    {
+      title: "Mario is the winner",
+      snippet:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    },
+    {
+      title: "Gikash kwa Bash",
+      snippet:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    },
   ];
-  res.render('index',{title:'Home',blogs});
-  
+  res.render("index", { title: "Home", blogs });
 });
 
-app.get('/about',(req,res)=>{
-    //res.send('<p> Home Page </p>');
-    //res.sendFile('./views/about.html',{root:__dirname});
-    res.render('about',{title:'About'});
+app.get("/about", (req, res) => {
+  //res.send('<p> Home Page </p>');
+  //res.sendFile('./views/about.html',{root:__dirname});
+  res.render("about", { title: "About" });
 });
-app.use('/blogs',blogRoutes);
+app.use("/blogs", blogRoutes);
 //listening for request
-app.use((req,res)=>{
-    res.status(404).render('404',{title:'404'});
+app.use((req, res) => {
+  res.status(404).render("404", { title: "404" });
 });
